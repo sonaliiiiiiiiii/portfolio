@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Dehradun Tourism</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f0f0;
+        }
+
+        #videoContainer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: -1;
+        }
+
+        #videoBG {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.42);
+        }
+
+        .box-main {
+            position: relative;
+            z-index: 1;
+        }
+
+        .navbar {
+            position: fixed;
+            left: 0;
+            z-index: 1000;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            box-sizing: border-box;
+            background-color: #333;
+            padding: 10px;
+        }
+
+        .nav-list {
+            display: flex;
+            align-items: center;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .nav-list li {
+            margin-right: 20px;
+        }
+        .nav-list li a:hover{
+            text-decoration: underline;
+            color: #00bfff;
+        }
+        .logo img {
+            height: 60px;
+            max-width: 100%;
+            object-fit: contain;
+        }
+
+        .navbar a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 18px;
+        }
+
+        .mainback {
+            position: fixed;
+            background-color: #333;
+            height: 100px;
+            width: 100%;
+            box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 10px 20px;
+            box-sizing: border-box;
+        }
+
+        .firstSection {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: auto;
+            padding: 185px 20px;
+            color: #fff;
+            text-align: center;
+        }
+
+        .firstHalf {
+            text-align: center;
+            color: #fff;
+        }
+        .text-big {
+            font-size: 60px;
+            font-family: 'Cambria', serif;
+            color: #00bfff;
+            margin-bottom: 2%;
+        }
+        .text-mid{
+            font-size: 30px;
+            font-family: 'Cambria', serif;
+            color: #00bfff;
+            margin-bottom: 2%;
+        }
+        .tomorrow {
+            font-size: 40px;
+            color: #fff;
+            margin-top: 0%;
+        }
+
+        .section{
+            height: auto;
+            display:flex;
+            align-items: center;
+            justify-content: space-evenly;
+            max-width: 100%;
+            margin: 50px 0;
+            color: #333;
+            background-color: #fff;
+            padding: 90px;
+            box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+            box-sizing: border-box;
+        }
+        .section2{
+            height: auto; 
+            display: flex;
+            flex-direction: column; 
+            align-items: center;
+            justify-content: space-evenly;
+            max-width: 100%;
+            margin: 50px 0;
+            color: #333;
+            background-color: transparent;
+            padding: 90px;
+            box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+            box-sizing: border-box;
+        }
+        .section ,.text-big{
+            margin-bottom: 20px;
+            color: #00bfff;
+        }
+        .section ,.text-small{
+            margin-bottom: 20px;
+            color: #333;
+        }
+        .section, .text-mid{
+            margin-bottom: 20px;
+            color: #00bfff;
+        }
+
+        .section-left{
+            flex-direction: row-reverse;
+        }
+        .places-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-evenly;
+            align-items: stretch;
+            gap: 20px;
+        }
+
+        .place-card {
+            width: calc(33.33% - 20px);
+            box-sizing: border-box;
+            transition: transform 0.3s ease-in-out;
+            margin-bottom: 20px;
+        }
+
+        .place-card img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            border-radius: 8px 8px 0 0;
+        }
+
+        .place-card .place-info {
+            padding: 15px;
+            height: 45%;
+            background-color: #000000;
+            border: 2px solid #00bfff;
+            border-radius: 0 0 8px 8px;
+            text-align: center;
+        }
+
+        .place-card:hover {
+            transform: scale(1.05);
+        }
+        .btn {
+            color: #00bfff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 50%;
+            border: 2px solid #00bfff;
+            background-color: transparent;
+            border-radius: 20px;
+            margin: 2px;
+            padding: 10px;
+            font-size: 14px;
+            margin-left: 20%;
+        }
+        .btn a{
+            color: #00bfff;
+        }
+
+        .btn:hover {
+            background-color: #ffffff;
+        }
+
+        .btn li {
+            list-style: none;
+        }
+        .footer{
+            z-index: 1001;
+            margin-bottom: 0%;
+            position: fixed;
+            background-color: #000000; 
+            bottom: 0; 
+            width: 100%;
+            text-align: center;
+        }
+
+    </style>
+</head>
+<body>
+    <div id="videoContainer">
+        <video autoplay muted loop id="videoBG" speed="3.0">
+            <source src="img/ddn_tourism - Made with Clipchamp.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        <div class="overlay"></div>
+    </div>
+
+    <nav class="navbar mainback">
+        <div class="logo">
+            <img src="img/UK_Tourism.png" alt="logo">
+        </div>
+        <ul class="nav-list">
+            <li><a href="#about">About Dehradun</a></li>
+            <li><a href="#places-to-visit">Places to Visit</a></li>
+            <li><a href="#culture">Culture</a></li>
+            <li><a href="#hotels">View Hotels</a></li>
+            <li><a href="https://uttarakhandtourism.gov.in/destination/dehradun" style="border: 2px solid #00bfff; 
+            border-radius: 30px; padding:10px 15px; color: #00bfff;" target="_blank">Explore More</a></li>
+        </ul>
+    </nav>
+
+    <section class="firstSection">
+        <div class="box-main">
+            <div class="firstHalf">
+                <p class="text-big">Explore Dehradun!</p>
+                <p class="tomorrow">DISCOVER THE BEAUTY OF DEHRADUN.</p>
+                <p>From scenic landscapes to rich cultural heritage, Dehradun welcomes you with open arms.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="section">
+        <div class="paras">
+            <p class="text-mid">WHAT TO KNOW</p>
+            <P class="text-small">Fascinating history and intriguing mythology meet at the crossroads of this 
+                beautiful hill-station, one of the most popular in the country. Just 240 km from Delhi, nestled 
+                in the rolling Doon Valley and at the foothills of the Himalayas, Dehradun is surrounded by high 
+                mountains and lush Sal forests. Known for its pleasant year-round weather and scenic surroundings, 
+                the city is a gateway to several popular hill-stations like Mussoorie and pilgrimage sites like 
+                Haridwar and Rishikesh. <br><br>Offering a blend of unparalleled landscape and modern amenities, bustling Dehradun is a city 
+                for both business and leisure. Once a retirement haven, today it buzzes with excitement, yet has 
+                managed to retain its laid-back vibe. Quaint cafés and lounges rub shoulders with heritage monuments and bazaars. 
+                <br><br>The education hub of northern India, the city is home to iconic institutions like Welham 
+                and Doon School, alma mater of stalwarts like former Prime Minister Rajiv Gandhi, Olympian Abhinav 
+                Bindra, and renowned author Amitav Ghosh. The Indian Military Academy is also located here. Said to 
+                have been established by Sikh guru Ram Rai in 1675, the city is also known as the abode of 
+                Dronacharya, the famed teacher from the epic Mahabharata. Fascinating history and intriguing 
+                mythology meet at the crossroads of this beautiful town, one of the most popular vacation spots 
+                in the country. </p>
+        </div>
+    </section>
+
+    <section ID="places-to-visit" class="section2">
+        <p class="text-mid">PLACES TO VISIT</p>
+        <div class="places-container">
+            <div class="place-card">
+                <img src="img/Malsi Deer Park.jpg" alt="Malsi Deer Park">
+                <div class="place-info text-mid">
+                    Malsi Deer Park
+                    <p style="text-align: center; font-size: 15px; color: white;">
+                        A beautiful park with a variety of deer species. Located at the distance of just 10 km from
+                        Dehradun, this mini-zoological park is situated at the foothills of Shivalik range. Spot deer
+                        and enjoy its beautiful settings.
+                    </p>
+                </div>
+            </div>
+            <div class="place-card">
+                <img src="img/Gucchupani or Robbers' Cave.jpg" alt="Robber's Cave">
+                <div class="place-info text-mid">
+                    Robber's Cave
+                    <p style="text-align: center; font-size: 15px; color: white;">
+                        Just 9 km from the heart of Dehradun is the Robber's Cave or Gucchupani,
+                        one of the most popular picnic spots in the region. A natural cave with a subterranean
+                        river flowing through it, it gives the feeling of being in a mysterious land deep in
+                        the forest. You can trek and wade through the river till the end of the cave, where
+                        there is a small waterfall. If you want, you can rent slippers from the cave entrance.
+                </div>
+            </div>
+            <div class="place-card">
+                <img src="img/Forest Research Institute.jpg" alt="FRI">
+                <div class="place-info text-mid">
+                    Forest Research Institute
+                    <p style="text-align: center; font-size: 15px; color: white;">
+                        The grand building of the Forest Research Institute is an icon of Dehradun. And even if you 
+                        are visiting it for the first time, the colonial-era structure may look familiar, having 
+                        been the location for several Bollywood films, including the Alia Bhatt and Varun Dhawan 
+                        starrer 'Student of the Year'. The reputed institute involved in the field of forestry also 
+                        has a museum on forestry that is open from 9.30 am to 5 pm.
+                </div>
+            </div>
+            <div class="place-card">
+                <img src="img/Sahastradhara.jpg" alt="Sahastradhara">
+                <div class="place-info text-mid">
+                    Sahastradhara
+                    <p style="text-align: center; font-size: 15px; color: white;">
+                        Sahastradhara, which means, 'thousand springs' is one of the best picnic spots on the 
+                        outskirts of the city. Falling from a height of 9 m, the waterfall attracts tourists and 
+                        locals alike. There are sulphur springs nearby, where people take a dip as it is said the 
+                        water can cure skin ailments. You can swim in the cool water or just explore the natural 
+                        surroundings.
+                </div>
+            </div>
+            <div class="place-card">
+                <img src="img/Tapovan_0.jpg" alt="Tapovan">
+                <div class="place-info text-mid">
+                    Tapovan
+                    <p style="text-align: center; font-size: 15px; color: white;">
+                        With a combination of holiness and natural beauty, Tapovan is a perfect place to find peace.
+                         About 5 km from the heart of the city on the Dehradun-Rajpur road, this scenic forest area 
+                         is located on the bank of River Ganga, and it is believed that Guru Dronacharya (of the 
+                         epic Mahabharata) had undergone his penance here. At any given time, you will find people 
+                         meditating here or practising yoga.
+                </div>
+            </div>
+            <div class="place-card">
+                <img src="img/Mindrolling Monastery.jpg" alt="Monastery">
+                <div class="place-info text-mid">
+                    Mindrolling Monastery
+                    <p style="text-align: center; font-size: 15px; color: white;">
+                        Keep a few hours in hand to visit the impressive Mindrolling Monastery, which is one of the 
+                        most important Buddhist learning centres in India. Around 10 km from Dehradun, you can come 
+                        here for a bit of peace. Meditate in the large prayer hall and admire the impressive 
+                        35-metre-high gilded statue of Lord Buddha. Several stupas in the complex offer a panoramic 
+                        view of the landscape.
+                </div>
+            </div>
+        </div>
+    </section>
+    <section id="culture" class="section">
+        <div class="paras">
+            <p class="text-mid">CULTURE</p>
+            <P class="text-small">Dehradun, the capital city of the Indian state of Uttarakhand, has a rich cultural heritage that reflects the diversity and traditions of the region. Here are some aspects of Dehradun's culture:
+                <br><br>
+                1. Religious Diversity:<br>
+                   - Dehradun is home to people from various religious backgrounds, and you can find temples, mosques, gurudwaras, and churches coexisting in the city.
+                <br><br>
+                2. Festivals:<br>
+                   - The city celebrates various festivals with enthusiasm. Diwali, Holi, Eid, Christmas, and other religious festivals are celebrated by different communities, bringing people together in joyous celebrations.
+                <br><br>
+                3. Traditional Music and Dance:<br>
+                   - Folk music and dance play a significant role in the cultural fabric of Dehradun. Traditional Garhwali and Kumaoni folk music and dance forms are often performed during cultural events and festivals.
+                <br><br>
+                4. Art and Craft:<br>
+                   - Dehradun has a rich tradition of art and craft. The region is known for its intricate woodwork, especially in the form of carved doors and windows. Pahari paintings and handicrafts are also popular.
+                <br><br>
+                5. Cuisine:<br>
+                   - The local cuisine of Dehradun reflects the traditional flavors of the region. Garhwali and Kumaoni dishes, such as Aloo Ke Gutke, Gahat Ki Dal, and Bal Mithai, are popular among the locals and visitors.
+                <br><br>    
+                6. Education and Literature:<br>
+                   - Dehradun is known for its educational institutions, including prestigious boarding schools and colleges. The city has a literary heritage, and various literary events and book fairs are organized to promote literature and reading.
+                <br><br>   
+                7. Colonial Influence:<br>
+                   - Due to its history, Dehradun has remnants of colonial architecture and a lifestyle that reflects the influence of the British era. The Forest Research Institute (FRI) is a notable example of colonial architecture in the city.
+                <br><br>
+                8. Natural Beauty and Adventure:<br>
+                   - The city's culture is also shaped by its close proximity to the Himalayan mountains and natural beauty. Adventure activities like trekking, camping, and river rafting are popular among the locals and tourists.
+                <br><br>
+                9. Yoga and Wellness:<br>
+                   - Given its serene surroundings, Dehradun has also become a hub for wellness and yoga retreats. Many people visit the city to rejuvenate and immerse themselves in yoga and meditation.
+                <br><br>
+                10. Language:<br>
+                    - Hindi and Garhwali are the primary languages spoken in Dehradun. However, due to its cosmopolitan nature, English is also widely understood.
+                <br><br>
+                Dehradun's cultural diversity and its blend of tradition and modernity make it a unique and vibrant city in northern India. </p>
+        </div>
+    </section>
+    <section id="hotels" class="section2">
+        <p class="text-mid">TOP HOTELS IN DEHRADUN</p>
+        <div class="places-container">
+            <div class="place-card">
+                <img src="img/446994572.jpg" alt="Fairfield">
+                <div class="place-info text-mid">
+                    Fairfield by Mariott
+                    <p style="text-align: center; font-size: 15px; color: white;">
+                        Address:<br>Mauza Malasi, Mussoorie Diversion Road, 248001 Dehradun, India
+                    </p>
+                    <ul class="btn">
+                        <li>
+                            <a href="https://www.booking.com/hotel/in/fairfield-by-marriott-dehradun.en-gb.html?
+                            aid=861619&label=msn-FiS2eBLguG1MfgU_Bvx6PQ-80745554880155%3Atikwd-80745748255386%3Aloc
+                            -90%3Aneo%3Amte%3Alp143821%3Adec%3Aqsdehradun%20tourism&sid=a18fca427fab26890d3cd7eff70
+                            9b98a&dest_id=-2094211;dest_type=city;dist=0;group_adults=2;group_children=0;hapos=2;hpo
+                            s=2;no_rooms=1;req_adults=2;req_children=0;room1=A%2CA;sb_price_type=total;sr_order=po
+                            pularity;srepoch=1705918177;srpvid=0f1e444db5710050;type=total;ucfs=1&#hotelTmpl">BOOK NOW</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="place-card">
+                <img src="img/hyatt.jpg" alt="Hyatt Centric">
+                <div class="place-info text-mid">
+                    Hyatt Centric
+                    <p style="text-align: center; font-size: 15px; color: white;">
+                        Address:<br>152/3-4, Jakhan, Rajpur Road, 248001 Dehradun, India
+                    </p>
+                    <ul class="btn">
+                        <li>
+                            <a href="https://www.booking.com/hotel/in/hyatt-centric-rajpur-road-dehradun.en-gb.html
+                                ?aid=861619&label=msn-FiS2eBLguG1MfgU_Bvx6PQ-80745554880155%3Atikwd-80745748255386%3Aloc
+                                -90%3Aneo%3Amte%3Alp143821%3Adec%3Aqsdehradun%20tourism&sid=a18fca427fab26890d3cd7eff709
+                                b98a&dest_id=-2094211;dest_type=city;dist=0;group_adults=2;group_children=0;hapos=1;hpos
+                                =1;no_rooms=1;req_adults=2;req_children=0;room1=A%2CA;sb_price_type=total;sr_order=popul
+                                arity;srepoch=1705918051;srpvid=0f1e444db5710050;type=total;ucfs=1&#hotelTmpl">
+                                BOOK NOW
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="place-card">
+                <img src="img/Clarion.jpg" alt="Clarion">
+                <div class="place-info text-mid">
+                    Clarion
+                    <p style="text-align: center; font-size: 15px; color: white;">
+                        Address: <br>Chakarata Road Clarks Collection Epicure, Nanda Ki Chowki, 248007 Dehradun, India –
+                    </p>
+                    <ul class="btn">
+                        <li>
+                            <a href="https://www.booking.com/hotel/in/clarks-collection-epicure-dehradun.en-gb.html
+                            ?aid=861619&label=msn-FiS2eBLguG1MfgU_Bvx6PQ-80745554880155%3Atikwd-80745748255386%3Aloc-90
+                            %3Aneo%3Amte%3Alp143821%3Adec%3Aqsdehradun%20tourism&sid=a18fca427fab26890d3cd7eff709b98a&
+                            dest_id=-2094211;dest_type=city;dist=0;group_adults=2;group_children=0;hapos=1;hpos=1;no_rooms=1;req_adu
+                            lts=2;req_children=0;room1=A%2CA;sb_price_type=total;sr_order=popularity;srepoch=170591894
+                            8;srpvid=100a48ee211f01b7;type=total;ucfs=1&#hotelTmpl">BOOK NOW</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <div class="footer">
+        <p class="text-small" style="color: rgba(255, 255, 255, 0.737);"> Copyright &copy; 2024 Dehradun Tourism. All rights reserved. </p>
+    </div>
+</body>
+</html>
